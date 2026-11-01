@@ -1,19 +1,20 @@
 #!name=Buddy加油站自动签到
 #!desc=WorkBuddy「Buddy加油站」每天自动签到领积分；支持 MITM 自动抓取登录态，也可手动填 token
-#!author=YOUR_NAME
+#!author=Sha01324
 
 [Script]
 # ① 抓取登录态：iPhone 上的 WorkBuddy 客户端请求 *.codebuddy.cn 时触发
 #    只在 token 变化时通知一次；抓到的值存进 Loon 持久化存储，签到脚本自动使用
-http-request ^https?:\/\/(www\.)?codebuddy\.cn\/ script-path=https://raw.githubusercontent.com/YOUR_GITHUB/YOUR_REPO/main/buddy-capture.js, tag=Buddy抓取登录态, timeout=10, enable=true
+#    注意：只能抓 iPhone App 的流量，桌面客户端抓不到（详见 README）
+http-request ^https?:\/\/(www\.)?codebuddy\.cn\/ script-path=https://gh-proxy.com/https://raw.githubusercontent.com/Sha01324/loon-scripts/main/scripts/buddy-capture.js, tag=Buddy抓取登录态, timeout=10, enable=true
 
 # ② 每天 09:05 自动签到（cron：分 时 日 月 周，跟随手机时区）
 #    不想用抓取、想手动填 token 的话，把这条换成：
 #    cron "5 9 * * *" script-path=..., tag=Buddy每日签到, timeout=60, argument="token=你的TOKEN&uid=你的UID", enable=true
-cron "5 9 * * *" script-path=https://raw.githubusercontent.com/YOUR_GITHUB/YOUR_REPO/main/buddy-checkin.js, tag=Buddy每日签到, timeout=60, enable=true
+cron "5 9 * * *" script-path=https://gh-proxy.com/https://raw.githubusercontent.com/Sha01324/loon-scripts/main/scripts/buddy-checkin.js, tag=Buddy每日签到, timeout=60, enable=true
 
 # ③ 手动触发一次（Loon 里点一下就跑，方便验证）
-generic script-path=https://raw.githubusercontent.com/YOUR_GITHUB/YOUR_REPO/main/buddy-checkin.js, tag=Buddy立即签到, img-url=bolt.fill.system, timeout=60, enable=true
+generic script-path=https://gh-proxy.com/https://raw.githubusercontent.com/Sha01324/loon-scripts/main/scripts/buddy-checkin.js, tag=Buddy立即签到, img-url=bolt.fill.system, timeout=60, enable=true
 
 [MITM]
 # 只解密这个域名，范围尽量小

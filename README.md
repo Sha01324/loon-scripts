@@ -16,8 +16,20 @@
 
 ### 1. 安装插件
 
-把 `conf/buddy.plugin` 里的 `YOUR_GITHUB/YOUR_REPO` 替换成你的仓库地址，
-然后在 Loon 中「配置 → 插件 → 添加订阅」或直接粘贴插件内容。
+本仓库地址：`https://github.com/Sha01324/loon-scripts`
+
+在 Loon 中「配置 → 插件 → 添加」，订阅下面这个链接（已走代理，国内可直连）：
+
+```
+https://gh-proxy.com/https://raw.githubusercontent.com/Sha01324/loon-scripts/main/conf/buddy.plugin
+```
+
+或者把 `conf/buddy.plugin` 的内容复制到 Loon 里手动添加。
+
+> **关于链接**：插件里脚本用的是 `gh-proxy.com` 加速镜像。
+> 国内直连 `raw.githubusercontent.com` 经常超时，用镜像更稳。
+> 如果你有更好的代理，把 `https://gh-proxy.com/` 换成你的即可，
+> 后面的原始地址保持不变。
 
 ### 2. 信任证书
 
