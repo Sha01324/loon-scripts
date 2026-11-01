@@ -6,7 +6,7 @@
 # ① 抓取登录态：iPhone 上的 WorkBuddy 客户端请求 *.codebuddy.cn 时触发
 #    只在 token 变化时通知一次；抓到的值存进 Loon 持久化存储，签到脚本自动使用
 #    注意：只能抓 iPhone App 的流量，桌面客户端抓不到（详见 README）
-http-request ^https?:\/\/(www\.)?codebuddy\.cn\/ script-path=https://gh-proxy.com/https://raw.githubusercontent.com/Sha01324/loon-scripts/main/scripts/buddy-capture.js, tag=Buddy抓取登录态, timeout=10, enable=true
+http-request ^https?:\/\/([a-z0-9-]+\.)*codebuddy\.cn(:[0-9]+)?\/ script-path=https://gh-proxy.com/https://raw.githubusercontent.com/Sha01324/loon-scripts/main/scripts/buddy-capture.js, tag=Buddy抓取登录态, timeout=10, enable=true
 
 # ② 每天 09:05 自动签到（cron：分 时 日 月 周，跟随手机时区）
 #    不想用抓取、想手动填 token 的话，把这条换成：
