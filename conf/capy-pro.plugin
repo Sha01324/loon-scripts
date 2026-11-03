@@ -1,9 +1,0 @@
-#!name=CapyPlayer Pro
-#!desc=改写 api-capyplayer.feifeiduck.cn 订阅/设备接口响应（适配 Base64 包装结构）
-#!system=ios
-
-[MITM]
-hostname = %APPEND% api-capyplayer.feifeiduck.cn
-
-[Script]
-http-response ^https?://api-capyplayer\.feifeiduck\.cn/api/v1/(subscriptions|devices|subscribe) script-path=https://raw.githubusercontent.com/Sha01324/loon-scripts/main/scripts/capy-pro.js, requires-body=true, timeout=30, tag=capy-pro
