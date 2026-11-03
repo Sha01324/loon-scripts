@@ -4,7 +4,7 @@ Loon 脚本集合。
 
 ## CapyPlayer Pro
 
-插件地址（在 Loon 里「导入插件」直接粘贴）：
+**插件地址**（Loon → 配置 → 插件 → 添加 → 粘贴这一行）：
 
 ```
 https://raw.githubusercontent.com/Sha01324/loon-scripts/main/conf/capy-pro.plugin
