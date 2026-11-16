@@ -52,7 +52,7 @@ if (d && typeof d === 'object') {
   d.has_subscription = true;
   d.is_active = true;
   if (!d.plan) { d.plan = 'lifetime'; d.plan_id = 'lifetime'; }
-  if (!d.product_id) d.product_id = 'com.feifeiduck.capyplayer.lifetime';
+  if (!d.product_id) d.product_id = 'capyplayer.pro.lifetime';
   if (!d.productId) d.productId = d.product_id;
   if (!d.status) d.status = 'active';
   if (!d.started_at) d.started_at = '2024-01-01T00:00:00Z';
