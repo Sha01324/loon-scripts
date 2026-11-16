@@ -55,9 +55,9 @@ if (d && typeof d === 'object') {
   if (!d.product_id) d.product_id = 'capyplayer.pro.lifetime';
   if (!d.productId) d.productId = d.product_id;
   if (!d.status) d.status = 'active';
-  if (!d.started_at) d.started_at = '2024-01-01T00:00:00Z';
+  if (!d.started_at) d.started_at = 1704067200000;
   if (!d.startedAt) d.startedAt = d.started_at;
-  if (!d.expires_at) d.expires_at = '2099-12-31T23:59:59Z';
+  if (!d.expires_at) d.expires_at = 4102415999000;
   if (!d.expiresAt) d.expiresAt = d.expires_at;
   if (!d.subscription) d.subscription = { plan: 'lifetime', is_active: true, status: 'active' };
   // 功能级清单（App 里有 blockedProFeatures / requiredFeatures 字段）
