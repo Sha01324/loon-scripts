@@ -1,0 +1,8 @@
+#!name=CapyPlayer Pro Unlock
+#!desc=把 CapyPlayer 订阅状态响应改为已激活（只改响应体，不动请求签名）
+
+[Script]
+http-response ^https://api-capyplayer\.feifeiduck\.cn/api/v1/subscriptions/status script-path=https://cdn.jsdelivr.net/gh/Sha01324/loon-scripts@main/capy_sub.js, requires-body=true, max-size=1048576
+
+[MITM]
+hostname = %APPEND% api-capyplayer.feifeiduck.cn
