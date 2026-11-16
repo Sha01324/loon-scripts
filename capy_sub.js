@@ -51,7 +51,8 @@ var d = o.data;
 if (d && typeof d === 'object') {
   d.has_subscription = true;
   d.is_active = true;
-  if (!d.plan) { d.plan = 'lifetime'; d.plan_id = 'lifetime'; }
+  d.tier = 'premium';
+  if (!d.plan) { d.plan = 'premium'; d.plan_id = 'premium'; }
   if (!d.product_id) d.product_id = 'capyplayer.pro.lifetime';
   if (!d.productId) d.productId = d.product_id;
   if (!d.status) d.status = 'active';
@@ -59,13 +60,14 @@ if (d && typeof d === 'object') {
   if (!d.startedAt) d.startedAt = d.started_at;
   if (!d.expires_at) d.expires_at = 4102415999000;
   if (!d.expiresAt) d.expiresAt = d.expires_at;
-  if (!d.subscription) d.subscription = { plan: 'lifetime', is_active: true, status: 'active' };
+  d.subscription = { tier: 'premium', plan: 'premium', is_active: true, status: 'active',
+                     expiration: 4102415999000, expires_at: 4102415999000 };
   // 功能级清单（App 里有 blockedProFeatures / requiredFeatures 字段）
   d.blockedProFeatures = [];
   d.blocked_pro_features = [];
   d.features = ['skipIntroOutro','autoSkipIntroOutro','skipOutro','skipIntro',
                 'subtitleSearch','onlineSubtitles','multiDevice','exportZip','unlimitedExport'];
-  d.entitlements = ['pro','premium','lifetime'];
+  d.entitlements = ['premium','lifetime'];
   d.requiredFeatures = [];
 }
 if (o.code !== undefined && typeof o.code === 'number' && o.code !== 1000 && o.code !== 0) o.code = 1000;
