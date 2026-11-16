@@ -50,4 +50,6 @@ if (o.code !== undefined && typeof o.code === 'number' && o.code !== 1000 && o.c
 if (o.message !== undefined && typeof o.message === 'string') o.message = 'success';
 
 var body = JSON.stringify(o);
-$done({ body: wasB64 ? b64e(body) : body });
+var outBody = wasB64 ? b64e(body) : body;
+$done({ body: outBody, headers: { 'Content-Length': String(outBody.length),
+                                   'Content-Type': 'application/json; charset=utf-8' } });
