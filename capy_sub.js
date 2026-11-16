@@ -60,6 +60,13 @@ if (d && typeof d === 'object') {
   if (!d.expires_at) d.expires_at = '2099-12-31T23:59:59Z';
   if (!d.expiresAt) d.expiresAt = d.expires_at;
   if (!d.subscription) d.subscription = { plan: 'lifetime', is_active: true, status: 'active' };
+  // 功能级清单（App 里有 blockedProFeatures / requiredFeatures 字段）
+  d.blockedProFeatures = [];
+  d.blocked_pro_features = [];
+  d.features = ['skipIntroOutro','autoSkipIntroOutro','skipOutro','skipIntro',
+                'subtitleSearch','onlineSubtitles','multiDevice','exportZip','unlimitedExport'];
+  d.entitlements = ['pro','premium','lifetime'];
+  d.requiredFeatures = [];
 }
 if (o.code !== undefined && typeof o.code === 'number' && o.code !== 1000 && o.code !== 0) o.code = 1000;
 if (o.message !== undefined && typeof o.message === 'string') o.message = 'success';
