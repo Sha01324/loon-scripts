@@ -46,6 +46,21 @@ function walk(x){
   }
 }
 walk(o);
+// ---- 补全真实订阅用户才会有的字段 ----
+var d = o.data;
+if (d && typeof d === 'object') {
+  d.has_subscription = true;
+  d.is_active = true;
+  if (!d.plan) { d.plan = 'lifetime'; d.plan_id = 'lifetime'; }
+  if (!d.product_id) d.product_id = 'com.feifeiduck.capyplayer.lifetime';
+  if (!d.productId) d.productId = d.product_id;
+  if (!d.status) d.status = 'active';
+  if (!d.started_at) d.started_at = '2024-01-01T00:00:00Z';
+  if (!d.startedAt) d.startedAt = d.started_at;
+  if (!d.expires_at) d.expires_at = '2099-12-31T23:59:59Z';
+  if (!d.expiresAt) d.expiresAt = d.expires_at;
+  if (!d.subscription) d.subscription = { plan: 'lifetime', is_active: true, status: 'active' };
+}
 if (o.code !== undefined && typeof o.code === 'number' && o.code !== 1000 && o.code !== 0) o.code = 1000;
 if (o.message !== undefined && typeof o.message === 'string') o.message = 'success';
 
