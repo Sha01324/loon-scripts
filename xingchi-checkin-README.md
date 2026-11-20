@@ -29,32 +29,29 @@
 - xingchi.plugin — Loon 插件配置
 - README.md — 本文件
 
-## 部署步骤
+## 部署步骤（脚本已托管，直接导入即可）
 
-### 第 1 步：托管脚本
-Loon 需从 URL 加载脚本。任选一种，把 3 个 .js 传上去拿 raw 直链：
-- GitHub Gist（推荐）：新建 gist 放 3 个文件 → 点 Raw 复制直链
-- 自己的服务器 / Vercel / Cloudflare Pages 静态目录
+脚本已放在公开仓库 `Sha01324/loon-scripts`，plugin 内已填好 raw 直链，无需自己托管。
 
-### 第 2 步：替换插件占位符
-把 xingchi.plugin 里所有 https://YOUR_HOST/xingchi-checkin/xxx.js 换成对应的 raw 直链。
+### 第 1 步：导入插件
+Loon 配置 → 插件 → 从 URL 导入，粘贴：
+https://raw.githubusercontent.com/Sha01324/loon-scripts/main/xingchi-checkin.plugin
 
-### 第 3 步：导入插件 + 开启 MITM
-1. 导入插件（Loon 配置 → 插件 → 从 URL/文本导入）
-2. Loon 安装 MITM 证书并在 iOS 设置里信任（设置 → 通用 → VPN与设备管理）
-3. 确认插件里 [MITM] hostname = xingchiapi.com, api.xingchiapi.com
+### 第 2 步：安装 MITM 证书
+Loon 安装 MITM 证书并在 iOS 设置里信任（设置 → 通用 → VPN与设备管理 → 描述文件）。
+确认插件里 [MITM] hostname = xingchiapi.com, api.xingchiapi.com。
 
-### 第 4 步：抓 token（一次性）
+### 第 3 步：抓 token（一次性）
 用 Safari（走 Loon 代理）打开并登录 https://xingchiapi.com/keys，登录后随便点几下页面。
 抓到 token 时 Loon 弹通知「token 已捕获」。
-注意：若用不走 Loon 代理的 App 内 WKWebView 则抓不到，改第 5 步手动填。
+注意：若用不走 Loon 代理的 App 内 WKWebView 则抓不到，改第 4 步手动填。
 
-### 第 5 步（兜底）手动填 token
+### 第 4 步（兜底）手动填 token
 1. 复制 Authorization: Bearer xxx 里的 xxx
 2. 编辑 xc-set-token.js 顶部 MANUAL_TOKEN = "你的token"，或运行该 generic 脚本时用 argument 传入
 3. 手动运行一次 → 通知「已保存 token」
 
-### 第 6 步：验证
+### 第 5 步：验证
 Loon 里手动运行一次 xc-checkin.js（或把 cron 时间临时改到下一分钟），
 应收到通知「签到成功 +N 额度」或「今日已签到，跳过」。
 
