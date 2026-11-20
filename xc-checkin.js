@@ -17,6 +17,7 @@
 var TOKEN_KEY   = "xc_token";
 var REFRESH_KEY = "xc_refresh_token";
 var HOST_KEY    = "xc_host";
+var COOKIE_KEY  = "xc_cookie";
 var RESULT_KEY  = "xc_checkin_result";
 var DEFAULT_HOST = "https://xingchiapi.com";
 
@@ -40,6 +41,9 @@ function api(method, path, token, body, cb) {
     "Content-Type": "application/json",
     "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15"
   };
+  // 前端 axios 用 withCredentials:true，真实请求带 Cookie；服务端可能依赖它识别用户
+  var ck = $persistentStore.read(COOKIE_KEY);
+  if (ck) headers["Cookie"] = ck;
   var params = {
     url: getHost() + path,
     headers: headers,
@@ -113,9 +117,13 @@ function finish(msg) {
 
   function handleStatus(r, tok) {
     var d = r.body && r.body.data;
-    log("状态响应 HTTP " + r.status + " -> " + r.raw);
+    log("状态响应 HTTP " + r.status + " host=" + getHost() + " cookie=" + ($persistentStore.read(COOKIE_KEY) ? "有" : "无") + " -> " + String(r.raw).slice(0, 200));
     if (!r.body || typeof r.body.code === "undefined") {
       finish("状态查询返回异常：" + (r.raw || "空响应").slice(0, 120));
+      return;
+    }
+    if (r.status && r.status >= 500) {
+      finish("服务端错误(HTTP " + r.status + ")：" + (r.body && (r.body.message || r.body.error) || "load user 失败") + "。建议重新登录让脚本抓最新 token+Cookie，或检查 plugin 的 MITM 是否放行了该域名。");
       return;
     }
     if (r.body.code !== 0 && !d) {
