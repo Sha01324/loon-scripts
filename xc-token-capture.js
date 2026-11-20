@@ -50,5 +50,7 @@ function save(url, key, val) {
     } catch (e) {}
   }
 
-  $done();
+  // 关键：http-request 中 $done({}) 表示放行请求（原样继续）。
+  // 切勿写 $done() 无参数，否则会丢弃该请求导致网页白屏无数据。
+  $done({});
 })();
