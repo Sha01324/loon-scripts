@@ -1,0 +1,19 @@
+#!name=星驰API每日签到
+#!desc=自动抓取登录token并每日签到领额度。安装后先用Safari登录一次xingchiapi.com让脚本抓到token，之后每天8点自动签到。
+#!author=大肥鱼
+#!icon=calendar.badge.clock
+#!date=2026-11-21
+#!system=ios,macos
+
+[Script]
+# 1) 抓 token：访问 xingchiapi.com 的 /api/v1/* 时自动保存 Authorization（需 MITM）
+http-request ^https?:\/\/(api\.)?xingchiapi\.com\/api\/v1\/ script-path=https://raw.githubusercontent.com/Sha01324/loon-scripts/main/xc-token-capture.js,tag=xc_token_capture,enable=true,timeout=10
+
+# 2) 每日签到：每天 08:00 执行（时间可改，见 README）
+cron "0 8 * * *" script-path=https://raw.githubusercontent.com/Sha01324/loon-scripts/main/xc-checkin.js,tag=xc_daily_checkin,enable=true,timeout=120
+
+# 3) 手动设置 token（可选）：需要时在 Loon 里手动运行此 generic 脚本
+generic script-path=https://raw.githubusercontent.com/Sha01324/loon-scripts/main/xc-set-token.js,tag=xc_set_token,enable=true,argument=""
+
+[MITM]
+hostname = xingchiapi.com, api.xingchiapi.com
