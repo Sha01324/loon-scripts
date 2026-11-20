@@ -1,26 +1,19 @@
 /**
- * 星驰API token 自动捕获脚本
+ * 星驰API token 自动捕获脚本 v2
  * 类型：http-request（需 MITM）
  *
- * 作用：当用户用浏览器/Safari 登录并访问 xingchiapi.com 的 /api/v1/* 接口时，
- *       抓取请求头里的 Authorization: Bearer xxx，存入 $persistentStore，
- *       供 xc-checkin.js 定时签到使用。
- *
- * 匹配 URL（写在 plugin 的 pattern 里）：
- *   ^https?://(api\.)?xingchiapi\.com/api/v1/.*
- *
- * 注意：此脚本不修改请求，随后 $done() 放行。
+ * 抓取登录后的 Authorization / Cookie / refresh_token，
+ * 并把 token 与其来源 host 原子绑定保存，避免域名错配导致 500 Failed to load user。
  */
 
 var TOKEN_KEY   = "xc_token";
 var REFRESH_KEY = "xc_refresh_token";
 var HOST_KEY    = "xc_host";
+var COOKIE_KEY  = "xc_cookie";
 
-function saveHost(url) {
-  try {
-    var m = url.match(/^(https?:\/\/[^\/]+)/);
-    if (m) $persistentStore.write(m[1], HOST_KEY);
-  } catch (e) {}
+function save(url, key, val) {
+  if (!val) return;
+  $persistentStore.write(String(val), key);
 }
 
 (function () {
@@ -28,34 +21,34 @@ function saveHost(url) {
   var url = req.url || "";
   var headers = req.headers || {};
 
-  // 记录当前实际使用的 API 域名（signin 站点可能是 xingchiapi.com 或 api.xingchiapi.com）
-  saveHost(url);
-
-  // 抓 Authorization: Bearer <token>
+  // 只在抓到 token 的这次请求里，把 host/token/cookie 一起落盘（原子绑定）
   var auth = headers.Authorization || headers.authorization || "";
-  var gotToken = false;
   if (/^Bearer\s+/i.test(auth)) {
     var tok = auth.replace(/^Bearer\s+/i, "").trim();
-    if (tok && tok.length > 20 && tok !== $persistentStore.read(TOKEN_KEY)) {
-      $persistentStore.write(tok, TOKEN_KEY);
-      console.log("[XC抓包] 已捕获并保存 Bearer token (" + tok.length + " 字符) from " + url);
-      $notification.post("星驰API", "token 已捕获", "已自动保存登录凭证，签到脚本现在可以工作了。");
-      gotToken = true;
+    if (tok && tok.length > 20) {
+      var m = url.match(/^(https?:\/\/[^\/]+)/);
+      var host = m ? m[1] : "https://xingchiapi.com";
+      var cookie = headers.Cookie || headers.cookie || "";
+      var changed = tok !== $persistentStore.read(TOKEN_KEY);
+
+      save(url, TOKEN_KEY, tok);
+      save(url, HOST_KEY, host);            // token 与 host 绑定
+      if (cookie) save(url, COOKIE_KEY, cookie);
+      else $persistentStore.write("", COOKIE_KEY);
+
+      console.log("[XC抓包] token已保存 from " + host + " cookie=" + (cookie ? "有" : "无"));
+      if (changed) $notification.post("星驰API", "token 已捕获", "凭证已保存，可运行签到脚本。");
     }
   }
 
-  // 顺带抓 refresh_token：登录/刷新请求的 body 里可能出现
+  // 抓 refresh_token（登录/刷新请求 body）
   var body = req.body || "";
   if (typeof body === "string" && body.length > 0) {
     try {
       var b = JSON.parse(body);
-      if (b && b.refresh_token && b.refresh_token !== $persistentStore.read(REFRESH_KEY)) {
-        $persistentStore.write(b.refresh_token, REFRESH_KEY);
-        console.log("[XC抓包] 已捕获 refresh_token");
-      }
+      if (b && b.refresh_token) save(url, REFRESH_KEY, b.refresh_token);
     } catch (e) {}
   }
 
-  // 放行请求，不做任何改动
   $done();
 })();
