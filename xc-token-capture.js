@@ -36,8 +36,13 @@ function save(url, key, val) {
       if (cookie) save(url, COOKIE_KEY, cookie);
       else $persistentStore.write("", COOKIE_KEY);
 
-      console.log("[XC抓包] token已保存 from " + host + " cookie=" + (cookie ? "有" : "无"));
-      if (changed) $notification.post("星驰API", "token 已捕获", "凭证已保存，可运行签到脚本。");
+      console.log("[XC抓包] token已保存 from " + host + " cookie=" + (cookie ? "有" : "无") + " changed=" + changed);
+      // 每次抓到都弹通知，明确区分「新token」与「复用老token」，
+      // 避免用户误以为脚本没抓到（之前仅 changed 时弹，token 没变就静默）
+      var tip = changed
+        ? "检测到新 token，已覆盖保存（来自 " + host + "）。"
+        : "进网站抓到 token，与已保存的一致（复用），签到脚本正常工作。";
+      $notification.post(changed ? "token 已捕获" : "token 已确认(复用)", "星驰API签到", tip);
     }
   }
 
