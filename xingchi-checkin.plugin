@@ -9,7 +9,7 @@
 # 认证请求仅保存会话快照，不保存密码或把发出的旧refresh当成新凭证。
 http-request ^https:\/\/(api\.)?xingchiapi\.com\/api\/v1\/auth\/ script-path=https://raw.githubusercontent.com/Sha01324/loon-scripts/main/xc-token-capture.js?v=3.0.0,tag=xc_auth_request,enable=true,timeout=10,requires-body=true,binary-body-mode=false
 # 普通请求只读Header；更换access时解除旧refresh绑定。
-http-request ^https:\/\/(api\.)?xingchiapi\.com\/api\/v\u0031\/(?!auth\/) script-path=https://raw.githubusercontent.com/Sha01324/loon-scripts/main/xc-token-capture.js?v=3.0.0,tag=xc_token_capture,enable=true,timeout=10,requires-body=false
+http-request ^https:\/\/(api\.)?xingchiapi\.com\/api\/v1\/(?!auth\/) script-path=https://raw.githubusercontent.com/Sha01324/loon-scripts/main/xc-token-capture.js?v=3.0.0,tag=xc_token_capture,enable=true,timeout=10,requires-body=false
 # 认证成功响应中整体捕获access与refresh，不修改请求/响应。
 http-response ^https:\/\/(api\.)?xingchiapi\.com\/api\/v1\/auth\/ script-path=https://raw.githubusercontent.com/Sha01324/loon-scripts/main/xc-token-capture.js?v=3.0.0,tag=xc_auth_response,enable=true,timeout=10,requires-body=true,binary-body-mode=false
 
