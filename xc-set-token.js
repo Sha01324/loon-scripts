@@ -73,7 +73,7 @@ var XC = (function () {
     return {access: data.access_token, refresh: data.refresh_token, host: origin, cookie: cookie || "", retired: retired};
   }
   function notify(title, message) {
-    try { $notification.post(title, "星驰API签到 v3.0.0", message); } catch (_) {}
+    try { $notification.post(title, "星驰API签到 v3.0.1", message); } catch (_) {}
   }
   return {key: KEY, json: json, object: object, text: text, token: token, host: host,
     target: target, header: header, status: status, success: success,
