@@ -7,7 +7,7 @@
 
 [Script]
 # 1) 抓 token：访问 xingchiapi.com 的 /api/v1/* 时自动保存 Authorization（需 MITM）
-http-request ^https?:\/\/(api\.)?xingchiapi\.com\/api\/v1\/ script-path=https://raw.githubusercontent.com/Sha01324/loon-scripts/main/xc-token-capture.js,tag=xc_token_capture,enable=true,timeout=10
+http-request ^https?:\/\/(api\.)?xingchiapi\.com\/api\/v1\/ script-path=https://raw.githubusercontent.com/Sha01324/loon-scripts/main/xc-token-capture.js,tag=xc_token_capture,enable=true,timeout=10,requires-body=true
 
 # 2) 每日签到：每天 08:00 执行（时间可改，见 README）
 cron "0 8 * * *" script-path=https://raw.githubusercontent.com/Sha01324/loon-scripts/main/xc-checkin.js,tag=xc_daily_checkin,enable=true,timeout=120
