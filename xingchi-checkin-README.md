@@ -1,10 +1,10 @@
-# 星驰API Loon 自动签到 v3.0.0
+# 星驰API Loon 自动签到 v3.0.1
 
 ## 安装 / 从旧版升级
 
 1. 在Loon更新或重新导入同一插件地址（不必叠加安装两份）：
    `https://raw.githubusercontent.com/Sha01324/loon-scripts/main/xingchi-checkin.plugin`
-2. 确认MITM已启用、证书已安装并信任，域名含 `xingchiapi.com` 和 `api.xingchiapi.com`。新配置应有认证请求、普通请求、认证响应三条http规则；脚本URL带 `?v=3.0.0`。
+2. 确认MITM已启用、证书已安装并信任，域名含 `xingchiapi.com` 和 `api.xingchiapi.com`。新配置应有认证请求、普通请求、认证响应三条http规则；脚本URL带 `?v=3.0.1`。
 3. **升级后请在走Loon的Safari里重新登录一次。**看到「已保存配套登录凭证，可用于自动续期」才表示access与refresh已配套保存。只看到访问凭证通知不代表续期已就绪；不必发送或截图你的token。
 4. 手动运行 `xc_daily_checkin` 验证普通签到/已签到提示。定时仍为设备时区每天08:00。
 
