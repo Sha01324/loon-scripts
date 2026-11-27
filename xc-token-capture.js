@@ -73,7 +73,7 @@ var XC = (function () {
     return {access: data.access_token, refresh: data.refresh_token, host: origin, cookie: cookie || "", retired: retired};
   }
   function notify(title, message) {
-    try { $notification.post(title, "星驰API签到 v3.0.0", message); } catch (_) {}
+    try { $notification.post(title, "星驰API签到 v3.0.1", message); } catch (_) {}
   }
   return {key: KEY, json: json, object: object, text: text, token: token, host: host,
     target: target, header: header, status: status, success: success,
@@ -82,10 +82,18 @@ var XC = (function () {
 
 (function () {
   var PENDING = "xc_auth_pending_v3";
+  var ALIVE = "xc_v3_alive";
+  function alive(host, cookie) {
+    if ($persistentStore.read(ALIVE) === "1") return;
+    try { $notification.post("抓包脚本已生效", "星驰API v3.0.1",
+      "已识别 " + host + " 的请求（Cookie:" + (cookie ? "有" : "无") + "）。当前仅确认脚本在运行。"); } catch (_) {}
+    $persistentStore.write("1", ALIVE);
+    console.log("[XC抓包] v3.0.1 alive host=" + host + " cookie=" + (cookie ? "有" : "无"));
+  }
   function notice(changed, complete) {
     if (changed) {
       XC.notify("凭证已捕获", complete ? "已保存配套登录凭证，可用于自动续期。" :
-        "已保存访问凭证；请登录一次，让响应脚本补齐自动续期凭证。");
+        "已保存访问凭证；请重新登录一次，让响应脚本补齐自动续期凭证。");
       $persistentStore.write("0", "xc_reuse_notified");
     } else if ($persistentStore.read("xc_reuse_notified") !== "1") {
       XC.notify("token 已确认(复用)", "抓包脚本正常工作，不重复保存或刷屏。");
@@ -104,6 +112,7 @@ var XC = (function () {
     var isResponse = typeof $response !== "undefined" && !!$response;
     if (!isResponse) {
       if (authRoute) {
+        alive(dest.host, !!cookie);
         // Store only session metadata and a refresh token, never login passwords.
         var keys = Object.keys(pending);
         for (var i = 0; i < keys.length; i++) {
@@ -126,6 +135,7 @@ var XC = (function () {
       if (!/^Bearer\s+/i.test(value.trim())) return;
       var access = XC.token(value);
       if (access.length <= 20) return;
+      alive(dest.host, !!cookie);
       if (current && (current.retired || []).indexOf(access) !== -1) return;
       if (!current || current.access !== access) {
         // A bare access token proves no binding to any previously saved refresh.
