@@ -1,5 +1,5 @@
 #!name=星驰API每日签到
-#!desc=v3.0.0：捕获配套登录/续期凭证。升级后重新登录一次；每日08:00签到。真实Loon续期仍待验证。
+#!desc=v3.0.1：捕获配套登录/续期凭证。升级后重新登录一次；每日08:00签到。真实Loon续期仍待验证。
 #!author=大肥鱼
 #!icon=calendar.badge.clock
 #!date=2026-11-27
@@ -7,17 +7,17 @@
 
 [Script]
 # 认证请求仅保存会话快照，不保存密码或把发出的旧refresh当成新凭证。
-http-request ^https:\/\/(api\.)?xingchiapi\.com\/api\/v1\/auth\/ script-path=https://raw.githubusercontent.com/Sha01324/loon-scripts/main/xc-token-capture.js?v=3.0.0,tag=xc_auth_request,enable=true,timeout=10,requires-body=true,binary-body-mode=false
+http-request ^https:\/\/(api\.)?xingchiapi\.com\/api\/v1\/auth\/ script-path=https://raw.githubusercontent.com/Sha01324/loon-scripts/main/xc-token-capture.js?v=3.0.1,tag=xc_auth_request,enable=true,timeout=10,requires-body=true,binary-body-mode=false
 # 普通请求只读Header；更换access时解除旧refresh绑定。
-http-request ^https:\/\/(api\.)?xingchiapi\.com\/api\/v1\/(?!auth\/) script-path=https://raw.githubusercontent.com/Sha01324/loon-scripts/main/xc-token-capture.js?v=3.0.0,tag=xc_token_capture,enable=true,timeout=10,requires-body=false
+http-request ^https:\/\/(api\.)?xingchiapi\.com\/api\/v1\/(?!auth\/) script-path=https://raw.githubusercontent.com/Sha01324/loon-scripts/main/xc-token-capture.js?v=3.0.1,tag=xc_token_capture,enable=true,timeout=10,requires-body=false
 # 认证成功响应中整体捕获access与refresh，不修改请求/响应。
-http-response ^https:\/\/(api\.)?xingchiapi\.com\/api\/v1\/auth\/ script-path=https://raw.githubusercontent.com/Sha01324/loon-scripts/main/xc-token-capture.js?v=3.0.0,tag=xc_auth_response,enable=true,timeout=10,requires-body=true,binary-body-mode=false
+http-response ^https:\/\/(api\.)?xingchiapi\.com\/api\/v1\/auth\/ script-path=https://raw.githubusercontent.com/Sha01324/loon-scripts/main/xc-token-capture.js?v=3.0.1,tag=xc_auth_response,enable=true,timeout=10,requires-body=true,binary-body-mode=false
 
 # 每日08:00按设备时区执行；单次最多续期一次。
-cron "0 8 * * *" script-path=https://raw.githubusercontent.com/Sha01324/loon-scripts/main/xc-checkin.js?v=3.0.0,tag=xc_daily_checkin,enable=true,timeout=120
+cron "0 8 * * *" script-path=https://raw.githubusercontent.com/Sha01324/loon-scripts/main/xc-checkin.js?v=3.0.1,tag=xc_daily_checkin,enable=true,timeout=120
 
 # argument支持纯access或完整凭证JSON；请勿发布真实凭证。
-generic script-path=https://raw.githubusercontent.com/Sha01324/loon-scripts/main/xc-set-token.js?v=3.0.0,tag=xc_set_token,enable=true,argument=""
+generic script-path=https://raw.githubusercontent.com/Sha01324/loon-scripts/main/xc-set-token.js?v=3.0.1,tag=xc_set_token,enable=true,argument=""
 
 [MITM]
 hostname = xingchiapi.com, api.xingchiapi.com
